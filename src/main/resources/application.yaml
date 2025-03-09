@@ -1,0 +1,25 @@
+server:
+  port: 8080
+  address: 0.0.0.0
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/chat_app
+    username: root
+    password: 123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  #    hibernate:
+  #      ddl-auto: update
+  jwt:
+    signerKey: "Qn9MjWd1+UXTs0Zmsa3zWGAvgmkIjPo5qPshFUvpNMUbONas1kn5+KY+jp6s4QfO"
+    access_token_valid_duration: 10 # in minutes
+    refresh_token_valid_duration: 60 # in minutes
+logging:
+  level:
+    org.springframework.security: DEBUG
