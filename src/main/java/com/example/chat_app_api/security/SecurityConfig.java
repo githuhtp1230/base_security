@@ -37,7 +37,11 @@ public class SecurityConfig {
     private final UserDetailServiceImpl userDetailService;
 
     private final String[] PUBLIC_ENDPOINTS = {
-            "/auth/register", "/auth/login", "/auth/logout", "auth/refresh-token", "users/*"
+            "/auth/register", "/auth/login", "/auth/logout", "/auth/refresh-token"
+    };
+
+    private final String[] PRIVATE_ENDPOINTS = {
+            "/users/*"
     };
 
     @NonFinal
@@ -49,8 +53,8 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
                 .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                // .requestMatchers(HttpMethod.GET,
-                // PRIVATE_ENDPOINTS).hasAuthority("ROLE_ADMIN")
+                 .requestMatchers(HttpMethod.GET,
+                 PRIVATE_ENDPOINTS).hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
@@ -69,7 +73,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
+        return new ProviderManager(authenticationProvider());
     }
 
     @Bean
